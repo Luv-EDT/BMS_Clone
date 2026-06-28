@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home.js";
 import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
+import ProtectedRoute from "./pages/ProtectedRoute.js";
 
 function App() {
   // Demo users database
@@ -27,7 +28,9 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Home />}
+            element={<ProtectedRoute>
+              <Home />
+            </ProtectedRoute>}
           />
 
           <Route
