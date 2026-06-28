@@ -1,0 +1,35 @@
+ .login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login-card {
+  width: 350px;
+  padding: 25px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.login-card h2 {
+  margin-bottom: 20px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.login-card p {
+  margin-top: 15px;
+}
