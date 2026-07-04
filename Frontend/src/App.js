@@ -2,10 +2,12 @@ import "./stylesheets/App.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from "./pages/Home.js";
+import Home from "./pages/User/Home.js";
 import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
-import ProtectedRoute from "./pages/ProtectedRoute.js";
+import ProtectedRoute from "./pages/User/ProtectedRoute.js";
+import AdminProtectedRoute from "./pages/Admin/AdminProtectedRoute.js";
+import AdminHome from "./pages/Admin/AdminHome.js";
 
 function App() {
   // Demo users database
@@ -32,7 +34,12 @@ function App() {
               <Home />
             </ProtectedRoute>}
           />
-
+          <Route
+            path="/admin"
+            element={<AdminProtectedRoute>
+              <AdminHome />
+            </AdminProtectedRoute>}
+          />
           <Route
             path="/login"
             element={<Login users={users} />}

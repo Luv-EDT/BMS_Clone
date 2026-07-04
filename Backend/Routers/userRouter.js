@@ -1,63 +1,223 @@
-const express = require('express');
-const User = require("../model/userModel.js");
+const express = require("express");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const User = require("../model/userModel");
+const authMiddleware = require("../middlewares/authMiddleware");
+const adminAuthMiddleware = require("../middlewares/adminAuthMiddleware");
+
 const router = express.Router();
 
+
+// ========================
 // Register
-router.post('/register', async (req, res) => {
-    const { userId, password } = req.body;
+// ========================
+
+router.post("/register", async (req, res) => {
+
+    const { name, userId, password } = req.body;
 
     try {
+
         // Check if user already exists
         const existingUser = await User.findOne({ userId });
+
         if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
+            return res.status(400).json({
+                success: false,
+                message: "User already exists"
+            });
         }
 
-        // Validate email format
+        // Validate Email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
         if (!emailRegex.test(userId)) {
-            return res.status(400).json({ message: 'Invalid email format' });
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Email"
+            });
         }
 
-        // Validate password (min 6 chars, at least one number)
+        // Validate Password
         const passwordRegex = /^(?=.*[0-9]).{6,}$/;
+
         if (!passwordRegex.test(password)) {
-            return res.status(400).json({ message: 'Password must be at least 6 characters and contain a number' });
+            return res.status(400).json({
+                success: false,
+                message: "Password must contain at least 6 characters and one number."
+            });
         }
 
-        // Create user
-        await User.create({ userId, password });
-        console.log("New User Registered");
-        res.status(201).json({ message: 'Registered successfully' });
+        // Hash Password
+        const salt = await bcrypt.genSalt(10);
+
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // Create User
+
+        const newUser = await User.create({
+            name,
+            userId,
+            password: hashedPassword
+        });
+
+        
+        const jwtToken = jwt.sign(
+            {
+                userId: newUser._id
+            },
+            process.env.AUTH_KEY,
+            {
+                expiresIn: "7d"
+            }
+        );
+
+
+        return res.status(201).json({
+            success: true,
+            message: "Registered Successfully",
+            token: jwtToken
+
+        });
 
     } catch (error) {
-        res.status(500).json({ message: 'Registration failed', error: error.message });
+
+        return res.status(500).json({
+            success: false,
+            message: "Registration Failed",
+            error: error.message
+        });
+
     }
+
 });
 
+
+// ========================
 // Login
-router.post('/login', async (req, res) => {
+// ========================
+
+router.post("/login", async (req, res) => {
+
     const { userId, password } = req.body;
 
     try {
-        // Step 1: Check if user exists
+
+        // Check User
+
         const user = await User.findOne({ userId });
+
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+
         }
 
-        // Step 2: Check if password is correct
-        if (user.password !== password) {
-            return res.status(401).json({ message: 'Incorrect password' });
+        // Compare Password
+
+        const isPasswordCorrect = await bcrypt.compare(
+            password,
+            user.password
+        );
+
+        if (!isPasswordCorrect) {
+
+            return res.status(401).json({
+                success: false,
+                message: "Incorrect Password"
+            });
         }
 
-        // Step 3: Logged in
-        console.log("User logged in:", userId);
-        res.status(200).json({ message: 'Logged in successfully' });
+        // Create JWT
+
+        const jwtToken = jwt.sign(
+            {
+                userId: user._id
+            },
+            process.env.AUTH_KEY,
+            {
+                expiresIn: "7d"
+            }
+        );
+
+        console.log("User Logged In");
+
+        return res.status(200).json({
+
+            success: true,
+            message: "Logged In Successfully",
+            token: jwtToken
+
+        });
 
     } catch (error) {
-        res.status(500).json({ message: 'Login failed', error: error.message });
+
+        return res.status(500).json({
+
+            success: false,
+            error
+
+        });
+
     }
+
 });
+
+
+// ========================
+// Get Current User
+// ========================
+
+router.get(
+    "/getCurrentUser",
+    authMiddleware,
+    async (req, res) => {
+        try {
+            return res.status(200).json({
+                success: true,
+                message: "User information fetched successfully.",
+                userData: req.user
+            });
+
+        } catch (error) {
+
+            return res.status(500).json({
+                success: false,
+                error
+            });
+
+        }
+
+    }
+);
+
+router.get(
+    "/getCurrentAdmin",
+    authMiddleware,
+    adminAuthMiddleware,
+    async (req, res) => {
+        try {
+            return res.status(200).json({
+                success: true,
+                message: "User information fetched successfully.",
+                userData: req.user
+            });
+
+        } catch (error) {
+
+            return res.status(500).json({
+                success: false,
+                error
+            });
+
+        }
+
+    }
+);
+
 
 module.exports = router;
