@@ -7,23 +7,12 @@ import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
 import ProtectedRoute from "./pages/User/ProtectedRoute.js";
 import AdminProtectedRoute from "./pages/Admin/AdminProtectedRoute.js";
+import ProfileProtectedRoute from "./pages/Profile/ProfileProtectedRoute.js";
 import AdminHome from "./pages/Admin/AdminHome.js";
+import Profile from "./pages/Profile";
 
 function App() {
   // Demo users database
-  const users = [
-    {
-      id: 1,
-      email: "john@gmail.com",
-      password: "john123",
-    },
-    {
-      id: 2,
-      email: "jane@gmail.com",
-      password: "jane123",
-    },
-  ];
-
   return (
     <div className="App">
       <BrowserRouter>
@@ -35,6 +24,12 @@ function App() {
             </ProtectedRoute>}
           />
           <Route
+            path="/profile"
+            element={<ProfileProtectedRoute>
+              <Profile />
+            </ProfileProtectedRoute>}
+          />
+          <Route
             path="/admin"
             element={<AdminProtectedRoute>
               <AdminHome />
@@ -42,7 +37,7 @@ function App() {
           />
           <Route
             path="/login"
-            element={<Login users={users} />}
+            element={<Login/>}
           />
 
           <Route

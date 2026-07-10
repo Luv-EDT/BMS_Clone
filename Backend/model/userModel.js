@@ -24,6 +24,9 @@ const userSchema = new mongoose.Schema({
   isAdmin: {
     type: String,
   },
+  isProfile: {
+    type: String,
+  },
 });
 
 const User = mongoose.model(

@@ -14,6 +14,9 @@ function Home() {
   if(user.isAdmin){
     navigate("/admin")
   }
+  else if(user.isProfile){
+    navigate("/profile")
+  }
   }, [])
 
 

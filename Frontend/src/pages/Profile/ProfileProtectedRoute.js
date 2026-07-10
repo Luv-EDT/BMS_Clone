@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getCurrentUser } from '../../apiCall/userApi'
+import { getCurrentProfile } from '../../apiCall/userApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../../store/userSlice'
 
-function ProtectedRoute({ children }) {
+function ProfileProtectedRoute({ children }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
@@ -20,7 +20,16 @@ function ProtectedRoute({ children }) {
 
     const checkAuth = async () => {
       try {
-        const currentUserResponse = await getCurrentUser()
+        const currentUserResponse = await getCurrentProfile()
+
+          if (currentUserResponse.data.message === "Permission Not Granted for this request") {
+
+        //   setLoading(false)
+          alert('Not allowed to access Profile pages.')
+          navigate("/")
+          return;   
+        }
+
         if (currentUserResponse.data.success === false) {
 
           localStorage.removeItem('token')
@@ -34,9 +43,7 @@ function ProtectedRoute({ children }) {
           setUser({
             user: currentUserResponse.data.userData, // or .data.userData -- depends on getCurrentUser's return shape
           })
-        )        
-
-
+        )
       } catch (error) {
         localStorage.removeItem('token')
         navigate('/login')
@@ -47,7 +54,7 @@ function ProtectedRoute({ children }) {
     }
 
     checkAuth()
-  }, [])
+  }, [token, navigate])
 
 
   if (loading) {
@@ -56,4 +63,4 @@ function ProtectedRoute({ children }) {
   return children
 }
 
-export default ProtectedRoute
+export default ProfileProtectedRoute

@@ -1,6 +1,7 @@
 const express = require('express');
 const userRouter = require('./Routers/userRouter')
 const moviesRouter = require('./Routers/moviesRouter')
+const theatresRouter = require('./Routers/theatresRouter')
 const cors = require("cors");
 
 
@@ -18,6 +19,7 @@ const PORT = process.env.PORT;
 app.use(express.json())
 app.use("/user", userRouter)
 app.use("/movies", moviesRouter)
+app.use("/theatres", theatresRouter)
 
 app.listen(PORT, () => {  
   console.log(`Server is running on http://localhost:${PORT}`);

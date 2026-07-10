@@ -1,9 +1,8 @@
 
-const adminAuthMiddleware = async (req, res, next) => {
+const profileAuthMiddleware = async (req, res, next) => {
     try {
 
-        const authHeader = req.user.isAdmin;
-
+        const authHeader = req.user.isProfile;
 
         if (!authHeader) {
             return res.status(401).json({
@@ -24,4 +23,4 @@ const adminAuthMiddleware = async (req, res, next) => {
     }
 };
 
-module.exports = adminAuthMiddleware;
+module.exports = profileAuthMiddleware;

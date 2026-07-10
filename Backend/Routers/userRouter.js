@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../model/userModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 const adminAuthMiddleware = require("../middlewares/adminAuthMiddleware");
+const profileAuthMiddleware = require("../middlewares/profileAuthMiddleware");
 
 const router = express.Router();
 
@@ -199,6 +200,31 @@ router.get(
     "/getCurrentAdmin",
     authMiddleware,
     adminAuthMiddleware,
+    async (req, res) => {
+        try {
+            return res.status(200).json({
+                success: true,
+                message: "User information fetched successfully.",
+                userData: req.user
+            });
+
+        } catch (error) {
+
+            return res.status(500).json({
+                success: false,
+                error
+            });
+
+        }
+
+    }
+);
+
+
+router.get(
+    "/getCurrentProfile",
+    authMiddleware,
+    profileAuthMiddleware,
     async (req, res) => {
         try {
             return res.status(200).json({

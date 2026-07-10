@@ -1,5 +1,6 @@
 import { Tabs } from "antd"
 import MoviesList from "../Movies/MoviesList"
+import TheatreAdminList from "./TheatreAdminList"
 import Navbar from "../Navbar"
 import { useEffect } from "react"
 
@@ -16,8 +17,8 @@ function AdminHome() {
                         <MoviesList />
                     </TabPane>
 
-                    <TabPane tab="Tab 2" key="2">
-                        <div>Tab 2 content coming soon</div>
+                    <TabPane tab="Theatres" key="2">
+                        <div><TheatreAdminList/></div>
                     </TabPane>
 
                     <TabPane tab="Tab 3" key="3">

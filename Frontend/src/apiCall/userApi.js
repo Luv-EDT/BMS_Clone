@@ -50,6 +50,21 @@ export async function getCurrentAdmin() {
     }
 }
 
+export async function getCurrentProfile() {
+    try {
+
+        const response = await axiosInstance.get(
+            "/user/getCurrentProfile"
+        );
+
+        return response;
+
+    } catch (error) {
+
+        return error.response
+    }
+}
+
 
 
 
