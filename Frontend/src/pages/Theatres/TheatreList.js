@@ -3,13 +3,19 @@ import { Table, Button, Popconfirm, Space, message, Tag } from "antd"
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons"
 import { getAllTheatres, deleteTheatre, updateTheatre } from "../../apiCall/theatreApi"
 import TheatreForm from "./TheatreForm"
+import ShowsForm from "../Shows/ShowsForm"
 
-function TheatreList() {
+
+function TheatreList({onShowAdded}) {
     const [theatres, setTheatres] = useState([])
     const [loading, setLoading] = useState(false)
     const [mode, setMode] = useState(null) // null | "edit" | "delete" | "add"
     const [showForm, setShowForm] = useState(false)
     const [selectedTheatre, setSelectedTheatre] = useState(null)
+
+
+const [showShowsForm, setShowShowsForm] = useState(false)
+const [selectedTheatreForShow, setSelectedTheatreForShow] = useState(null)
 
     // ─── Fetch all theatres on mount ─────────────────────────────────────────
     useEffect(() => {
@@ -100,42 +106,57 @@ function TheatreList() {
                     <Tag color="orange">Pending</Tag>
                 ),
         },
-        {
-            title: "Action",
-            render: (_, record) => {
-                if (mode === "edit") {
-                    return (
-                        <Button
-                            type="primary"
-                            icon={<EditOutlined />}
-                            size="small"
-                            onClick={() => handleEditClick(record)}
-                        >
-                            Edit
-                        </Button>
-                    )
-                }
+       {
+    title: "Action",
+    render: (_, record) => {
+        // inactive theatres: no actions in any mode
+        if (!record.isActive) return null
 
-                if (mode === "delete") {
-                    return (
-                        <Popconfirm
-                            title="Are you sure you want to delete this theatre?"
-                            onConfirm={() => handleDelete(record._id)}
-                            okText="Yes, delete"
-                            cancelText="Cancel"
-                        >
-                            <Button
-                                danger
-                                icon={<DeleteOutlined />}
-                                size="small"
-                            />
-                        </Popconfirm>
-                    )
-                }
+        if (mode === "edit") {
+            return (
+                <Button
+                    type="primary"
+                    icon={<EditOutlined />}
+                    size="small"
+                    onClick={() => handleEditClick(record)}
+                >
+                    Edit
+                </Button>
+            )
+        }
 
-                return null
-            },
-        },
+        if (mode === "delete") {
+            return (
+                <Popconfirm
+                    title="Are you sure you want to delete this theatre?"
+                    onConfirm={() => handleDelete(record._id)}
+                    okText="Yes, delete"
+                    cancelText="Cancel"
+                >
+                    <Button
+                        danger
+                        icon={<DeleteOutlined />}
+                        size="small"
+                    />
+                </Popconfirm>
+            )
+        }
+
+        // mode === null and theatre is active — show Add Show
+        return (
+            <Button
+                type="primary"
+                size="small"
+                onClick={() => {
+                    setSelectedTheatreForShow(record)
+                    setShowShowsForm(true)
+                }}
+            >
+                + Add Show
+            </Button>
+        )
+    },
+},
     ]
 
     // ─── Render ──────────────────────────────────────────────────────────────
@@ -195,6 +216,22 @@ function TheatreList() {
                 onAddSuccess={handleAddSuccess}
                 onUpdateSuccess={handleUpdate}
             />
+            <ShowsForm
+    visible={showShowsForm}
+    onClose={() => {
+        setShowShowsForm(false)
+        setSelectedTheatreForShow(null)
+    }}
+    initialData={null}
+    preselectedTheatre={selectedTheatreForShow}
+    onAddSuccess={(newShow) => {
+        message.success("Show added successfully")
+        setShowShowsForm(false)
+        setSelectedTheatreForShow(null)
+        onShowAdded()
+    }}
+    onUpdateSuccess={null}
+/>
         </div>
     )
 }

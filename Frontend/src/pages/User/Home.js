@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import Navbar from '../Navbar';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ShowsListPublic from '../Shows/ShowsListPublic'
 
 
 function Home() {
@@ -23,8 +24,8 @@ function Home() {
   return (
     <div>
       <Navbar />
-      <div>....</div>
-    </div>
+      <ShowsListPublic/>
+      </div>
   )
 }
 
