@@ -74,7 +74,30 @@ router.get("/getUserShows", authMiddleware, profileAuthMiddleware, async (req, r
         })
     }
 })
+// get show by ID
 
+router.get("/getShowById/:id", authMiddleware, async (req, res) => {
+    try {
+        const {id} = req.params
+        const showById = await Show.findById(id)
+            .populate("movie")
+            .populate("theatre")
+            .populate("user", "-password")
+
+        return res.status(200).json({
+            success: true,
+            message: "The show fetched successfully",
+            data: showById,
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch the show",
+            error: error.message,
+        })
+    }
+})
 
 // ========================
 // Add Show
@@ -82,7 +105,7 @@ router.get("/getUserShows", authMiddleware, profileAuthMiddleware, async (req, r
 
 router.post("/add", authMiddleware, profileAuthMiddleware, async (req, res) => {
     try {
-        const { name, movie, theatre, date, totalSeats } = req.body
+        const { name, movie, theatre, date, totalSeats, ticketPrice } = req.body
 
         const newShow = await Show.create({
             name,
@@ -92,6 +115,7 @@ router.post("/add", authMiddleware, profileAuthMiddleware, async (req, res) => {
             date,
             totalSeats,
             availableSeats: totalSeats,
+            ticketPrice,
             bookedSeats: 0,
         })
 

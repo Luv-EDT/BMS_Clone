@@ -3,11 +3,13 @@ import "./stylesheets/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./pages/User/Home.js";
+import MoviePage from "./pages/User/MoviePage.js";
 import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
 import ProtectedRoute from "./pages/User/ProtectedRoute.js";
 import AdminProtectedRoute from "./pages/Admin/AdminProtectedRoute.js";
 import ProfileProtectedRoute from "./pages/Profile/ProfileProtectedRoute.js";
+import BookingPage from "./pages/User/BookingPage.js";
 import AdminHome from "./pages/Admin/AdminHome.js";
 import Profile from "./pages/Profile";
 
@@ -37,13 +39,34 @@ function App() {
           />
           <Route
             path="/login"
-            element={<Login/>}
+            element={<Login />}
           />
 
           <Route
             path="/register"
             element={<Register />}
           />
+          <Route path="/movie/:id" element={
+            <ProtectedRoute>
+              <MoviePage />
+            </ProtectedRoute>
+          } />
+          <Route path="/booking/:id" element={
+            <ProtectedRoute>
+            <BookingPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/payment-success" element={
+            <ProtectedRoute>
+            Payment Success
+            </ProtectedRoute>
+          } />
+          <Route path="/payment-failed" element={
+            <ProtectedRoute>
+            Payment Failed
+            </ProtectedRoute>
+          } />
+
         </Routes>
       </BrowserRouter>
     </div>

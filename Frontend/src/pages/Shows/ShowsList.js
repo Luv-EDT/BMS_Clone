@@ -86,6 +86,10 @@ function ShowsList({refreshShows}) {
             dataIndex: "bookedSeats",
         },
         {
+            title: "Ticket Price",
+            dataIndex: "ticketPrice",
+        },
+        {
             title: "Action",
             render: (_, record) => {
                 if (mode === "edit") {

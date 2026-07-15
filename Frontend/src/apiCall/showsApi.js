@@ -4,6 +4,10 @@ export async function getAllShows() {
     const response = await axiosInstance.get("/shows/getAll")
     return response
 }
+export async function getShowById(id) {
+    const response = await axiosInstance.get(`/shows/getShowById/${id}`)
+    return response
+}
 
 export async function getUserShows() {
     const response = await axiosInstance.get("/shows/getUserShows")

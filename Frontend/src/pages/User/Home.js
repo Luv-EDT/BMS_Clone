@@ -1,32 +1,29 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import Navbar from '../Navbar';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ShowsListPublic from '../Shows/ShowsListPublic'
+import { Tabs } from "antd"
+import MoviesAll from "./MoviesAll"
+import Bookings from "./Bookings"
+import Navbar from "../Navbar"
+import { useEffect } from "react"
 
+const { TabPane } = Tabs
 
 function Home() {
-  const navigate = useNavigate()
-  const { user } = useSelector((state) => state.user)
 
+    return (
+        <div>
+            <Navbar />
+            <div style={{ padding: 24 }}>
+                <Tabs defaultActiveKey="1">
+                    <TabPane tab="Movies" key="1">
+                        <MoviesAll />
+                    </TabPane>
 
-  useEffect(()=>{
-  if(user.isAdmin){
-    navigate("/admin")
-  }
-  else if(user.isProfile){
-    navigate("/profile")
-  }
-  }, [])
-
-
-  return (
-    <div>
-      <Navbar />
-      <ShowsListPublic/>
-      </div>
-  )
+                    <TabPane tab="Your Bookings" key="2">
+                        <div><Bookings/></div>
+                    </TabPane>
+                </Tabs>
+            </div>
+        </div>
+    )
 }
 
 export default Home

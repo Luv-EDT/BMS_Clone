@@ -41,6 +41,7 @@ function ShowsForm({ visible, onClose, initialData, preselectedTheatre, onAddSuc
                 theatre: initialData.theatre?._id,
                 date: initialData.date ? dayjs(initialData.date) : null,
                 totalSeats: initialData.totalSeats,
+                ticketPrice: initialData.ticketPrice,
             })
         } else {
             form.resetFields()
@@ -157,6 +158,13 @@ function ShowsForm({ visible, onClose, initialData, preselectedTheatre, onAddSuc
                     rules={[{ required: true, message: "Please enter total seats" }]}
                 >
                     <InputNumber min={1} style={{ width: "100%" }} placeholder="e.g. 200" />
+                </Form.Item>
+                <Form.Item
+                    label="Ticket Price"
+                    name="ticketPrice"
+                    rules={[{ required: true, message: "Please enter the ticket price" }]}
+                >
+                    <InputNumber min={1} style={{ width: "100%" }} placeholder="e.g. 500" />
                 </Form.Item>
             </Form>
         </Modal>

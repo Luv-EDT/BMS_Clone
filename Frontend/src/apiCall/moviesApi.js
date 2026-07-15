@@ -19,4 +19,14 @@ export async function deleteMovie(id) {
     const response = await axiosInstance.delete(`/movies/delete/${id}`)
     return response
 }
+
+export async function getUpcomingAndWithShows() {
+    const response = await axiosInstance.get("/movies/getUpcomingAndWithShows")
+    return response
+}
+
+export async function getMovieById(id) {
+    const response = await axiosInstance.post(`/movies/getById/${id}`)
+    return response
+}
     
