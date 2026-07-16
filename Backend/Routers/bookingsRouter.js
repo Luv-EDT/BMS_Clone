@@ -19,6 +19,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 createCheckoutSession = async (req, res) => {
 
     try {
+            console.log("Reached create checkout session");
+
 
         const {
 
