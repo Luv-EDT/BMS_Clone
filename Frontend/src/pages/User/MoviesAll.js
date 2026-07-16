@@ -16,7 +16,11 @@ function MoviesAll() {
       const { user } = useSelector((state) => state.user)
 
     useEffect(() => {
+console.log(user)
+            if (!user) return;
+
         if(user.isAdmin){
+        
         navigate("/admin")
         return
   }

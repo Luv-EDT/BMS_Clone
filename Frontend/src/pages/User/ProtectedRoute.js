@@ -21,6 +21,7 @@ function ProtectedRoute({ children }) {
     const checkAuth = async () => {
       try {
         const currentUserResponse = await getCurrentUser()
+        console.log(currentUserResponse.data);
         if (currentUserResponse.data.success === false) {
 
           localStorage.removeItem('token')
@@ -35,6 +36,7 @@ function ProtectedRoute({ children }) {
             user: currentUserResponse.data.userData, // or .data.userData -- depends on getCurrentUser's return shape
           })
         )        
+        console.log("After dispatch");
 
 
       } catch (error) {
