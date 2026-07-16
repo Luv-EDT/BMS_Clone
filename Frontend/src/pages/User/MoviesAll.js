@@ -113,8 +113,6 @@ function MoviesAll() {
 
     if (loading) {
         return (
-            <div>
-                <Navbar />
                 <div
                     style={{
                         display: "flex",
@@ -124,13 +122,10 @@ function MoviesAll() {
                 >
                     <Spin size="large" />
                 </div>
-            </div>
         )
     }
 
     return (
-        <div>
-            <Navbar />
             <div style={{ padding: 24 }}>
                 {/* Search */}
                 <Input
@@ -186,7 +181,6 @@ function MoviesAll() {
                         </div>
                     )}
             </div>
-        </div>
     )
 }
 
