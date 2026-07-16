@@ -69,10 +69,10 @@ createCheckoutSession = async (req, res) => {
             },
 
             success_url:
-                "http://localhost:3000/payment-success",
+                `${process.env.FRONTEND_URL}/payment-success`,
 
             cancel_url:
-                "http://localhost:3000/payment-cancel"
+                `${process.env.FRONTEND_URL}/payment-cancel`
 
         });
 

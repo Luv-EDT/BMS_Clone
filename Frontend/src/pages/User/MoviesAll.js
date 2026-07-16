@@ -15,7 +15,6 @@ function MoviesAll() {
     const [loading, setLoading] = useState(false)
       const { user } = useSelector((state) => state.user)
 
-
     useEffect(() => {
         if(user.isAdmin){
         navigate("/admin")
