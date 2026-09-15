@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require("dotenv")
+
 dotenv.config();
 
 const userRouter = require('./Routers/userRouter')
@@ -9,8 +10,6 @@ const showsRouter = require('./Routers/showsRouter')
 const bookingsRouter = require("./Routers/bookingsRouter")
 
 const cors = require("cors");
-
-
 
 const db = require("./config/MongoDBCon.js") // writing db is optional. Just the require(), runs the entire file.
 

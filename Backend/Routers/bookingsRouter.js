@@ -5,7 +5,6 @@ const Show = require("../model/showsModel")
 
 const authMiddleware = require("../middlewares/authMiddleware")
 
-// const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 
 const router = express.Router()
 
@@ -15,7 +14,7 @@ const router = express.Router()
 // ========================
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
+// creating a stripe session, so that stripe can take care of the entire payment flow. 
 createCheckoutSession = async (req, res) => {
 
     try {
@@ -74,7 +73,7 @@ createCheckoutSession = async (req, res) => {
                 `${process.env.FRONTEND_URL}/payment-success`,
 
             cancel_url:
-                `${process.env.FRONTEND_URL}/payment-cancel`
+                `${process.env.FRONTEND_URL}/payment-failed`
 
         });
                     console.log("session created");
@@ -130,8 +129,6 @@ webhook = async (req, res) => {
 
     if (event.type === "checkout.session.completed") {
 
-        
-
         const session = event.data.object;
 
         console.log(session);
@@ -160,8 +157,6 @@ webhook = async (req, res) => {
                 session.payment_intent,
             sessionId: 
                 session.id
-
-
 
         });
 
@@ -198,6 +193,8 @@ webhook = async (req, res) => {
 
 };
 
+
+// we enter this route in a proper URL format, inside the wehook endpoint configuration in stripe dashboard, so that stripe can send the webhook to this route, when the payment is successful.
 router.post(
     "/payment-confirmation-webhook",
     express.raw({ type: "application/json" }),

@@ -34,6 +34,6 @@ const bookingSchema = new mongoose.Schema(
     }
 )
 
-const Booking = mongoose.model("Booking", bookingSchema)
+const Booking = mongoose.model("Booking", bookingSchema) //"Booking" is the name here(interface/Client connecting MongoDB and our NodeJS for this particular collection), "bookings" is in the DB
 
 module.exports = Booking

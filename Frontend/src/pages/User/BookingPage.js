@@ -9,8 +9,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import { createCheckoutSession } from "../../apiCall/bookingsApi";
 
 const stripePromise = loadStripe(
-    "pk_test_51Tshf6Jz5u4VH7AU0NvIYf0rCeu4SRfs4Wymb8bP79Dj6eOnE7y8QcT982YIaejJ0GKpc6C0Ncxff0XIr020p0RH00BlDGNe8G"
-    );
+    process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
+)
 
 const COLUMNS = 12
 

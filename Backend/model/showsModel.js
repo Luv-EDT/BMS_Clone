@@ -42,7 +42,7 @@ const showSchema = new mongoose.Schema(
             default: [],
         },
     },
-    {
+    {   
         timestamps: true,
     }
 )
